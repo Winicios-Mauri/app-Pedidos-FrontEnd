@@ -3,14 +3,14 @@ import { Container } from './styles';
 
 const orders: Order[] = [
   {
-    '_id': '637abdec6b765d4f4e729f2d',
-    'table': '123',
+    '_id': '637ebf33d6369eb466034433',
+    'table': '3',
     'status': 'WAITING',
     'products': [
       {
         'product': {
-          'name': 'Coca cola',
-          'imagePath': '1668987261476-quatro-queijos.png',
+          'name': 'Cocas cola',
+          'imagePath': '1669250848152-cerveja.png',
           'price': 1.3,
         },
         'quantity': 3,
@@ -19,7 +19,7 @@ const orders: Order[] = [
       {
         'product': {
           'name': 'Coca cola',
-          'imagePath': '1668987261476-quatro-queijos.png',
+          'imagePath': '1669250848152-cerveja.png',
           'price': 1.3,
         },
         'quantity': 3,
