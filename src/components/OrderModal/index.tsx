@@ -8,10 +8,12 @@ import { Actions, ModalBody, OrderDetails, Overlay } from './styled';
 interface OrderModalProps {
   visible: boolean;
   order: Order | null;
-  onClose(): void;
+  onClose: () => void;
+  onCancelOrder: () => Promise<void>;
+  isLoading: boolean;
 }
 
-export function OrderModal({visible, order, onClose}: OrderModalProps) {
+export function OrderModal({visible, order, onClose, onCancelOrder, isLoading}: OrderModalProps) {
   useEffect(() => {
     function handleKeydown(event: KeyboardEvent){
       if (event.key === 'Escape'){
@@ -90,12 +92,12 @@ export function OrderModal({visible, order, onClose}: OrderModalProps) {
         </OrderDetails>
 
         <Actions>
-          <button className="primary" type="button">
+          <button className="primary" type="button" disabled={isLoading}>
             <span>👨‍🍳</span>
             <strong>Iniciar Produção</strong>
           </button>
 
-          <button className="secundary" type="button">
+          <button className="secundary" type="button" onClick={onCancelOrder} disabled={isLoading}>
             Cancelar Pedido
           </button>
         </Actions>
