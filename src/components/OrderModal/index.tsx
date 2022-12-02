@@ -11,12 +11,13 @@ interface OrderModalProps {
   onClose: () => void;
   onCancelOrder: () => Promise<void>;
   isLoading: boolean;
+  onChangeOrderStatus: () => void;
 }
 
-export function OrderModal({visible, order, onClose, onCancelOrder, isLoading}: OrderModalProps) {
+export function OrderModal({ visible, order, onClose, onCancelOrder, isLoading, onChangeOrderStatus }: OrderModalProps) {
   useEffect(() => {
-    function handleKeydown(event: KeyboardEvent){
-      if (event.key === 'Escape'){
+    function handleKeydown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
         onClose();
       }
     }
@@ -26,13 +27,13 @@ export function OrderModal({visible, order, onClose, onCancelOrder, isLoading}: 
       document.removeEventListener('keydown', handleKeydown);
 
     };
-  },[onClose]);
+  }, [onClose]);
 
   if (!visible || !order) {
     return null;
   }
 
-  const total = order.products.reduce((total, {product, quantity}) => {
+  const total = order.products.reduce((total, { product, quantity }) => {
     return total + (product.price * quantity);
   }, 0);
 
@@ -66,7 +67,7 @@ export function OrderModal({visible, order, onClose, onCancelOrder, isLoading}: 
         <OrderDetails>
           <div className="order-items">
             <strong>Itens</strong>
-            {order.products.map(({_id, product, quantity}) => (
+            {order.products.map(({ _id, product, quantity }) => (
               <div className="item" key={_id}>
                 <img
                   src={`http://localhost:3001/upload/${product.imagePath}`}
@@ -92,11 +93,20 @@ export function OrderModal({visible, order, onClose, onCancelOrder, isLoading}: 
         </OrderDetails>
 
         <Actions>
-          <button className="primary" type="button" disabled={isLoading}>
-            <span>👨‍🍳</span>
-            <strong>Iniciar Produção</strong>
-          </button>
-
+          {
+            order.status !== 'DONE' && (
+              <button className="primary" type="button" disabled={isLoading} onClick={onChangeOrderStatus}>
+                <span>
+                  {order.status === 'WAITING' && '👨‍🍳' }
+                  {order.status === 'IN_PRODUCTION' && '✔️' }
+                </span>
+                <strong>
+                  {order.status === 'WAITING' && 'Iniciar Produção' }
+                  {order.status === 'IN_PRODUCTION' && 'Concluir Pedido' }
+                </strong>
+              </button>
+            )
+          }
           <button className="secundary" type="button" onClick={onCancelOrder} disabled={isLoading}>
             Cancelar Pedido
           </button>
